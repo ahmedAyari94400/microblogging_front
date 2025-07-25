@@ -1,7 +1,3 @@
-"use client";
-
-// import React, { useEffect, useState } from 'react';
-
 import RegisterForm from "./components/RegisterForm";
 
 export default function SignupPage() {
