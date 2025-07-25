@@ -1,5 +1,6 @@
 import LoginForm from "./components/LoginForm";
 import Link from "next/link";
+import ButtonLink from "../components/ButtonLink";
 
 export default function LoginPage() {
   return (
@@ -12,19 +13,22 @@ export default function LoginPage() {
 
       <div className="min-h-screen">
         <LoginForm />
-        <p className="text-xl text-center mt-15">
+        <p className="text-4xl text-center mt-15 p-6">
           Pas encore de compte ?<br></br>
-          Créez votre compte en quelques clics !
+          <br></br>
+          Créez le vôtre en quelques clics<br></br>et commencez à partager avec
+          la communauté !
         </p>
         {/* Bouton */}
-        <div className="hidden md:flex center">
+        <ButtonLink href="signup">Créer un compte</ButtonLink>
+        {/* <div className="hidden md:flex center">
           <Link
             href="/signup"
             className="bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-xl shadow-sm transition"
           >
             Créer un compte
           </Link>
-        </div>
+        </div> */}
       </div>
     </>
   );

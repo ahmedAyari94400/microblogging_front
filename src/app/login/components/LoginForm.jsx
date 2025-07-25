@@ -46,15 +46,15 @@ export default function LoginForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="max-w-md mx-auto space-y-4 p-4 shadow-md rounded"
-      style={{ backgroundColor: "var(--vert)" }}
+      className="w-full max-w-2xl mx-auto space-y-6 p-8 shadow-lg rounded-xl"
+      style={{ backgroundColor: "var(--bleugris)" }}
     >
-      <h2 className="text-xl font-bold">Se connecter</h2>
+      <h2 className="text-2xl font-bold text-center">Se connecter</h2>
 
       <div>
         <label
           htmlFor="firstname"
-          className="block text-sm font-medium text-gray-700 mb-1"
+          className="block text-md font-medium text-gray-700 mb-1"
         >
           Prénom
         </label>
@@ -73,7 +73,7 @@ export default function LoginForm() {
       <div>
         <label
           htmlFor="password"
-          className="block text-sm font-medium text-gray-700 mb-1"
+          className="block text-md text-gray-700 font-medium mb-1"
         >
           Mot de passe
         </label>
@@ -91,7 +91,7 @@ export default function LoginForm() {
 
       <button
         type="submit"
-        className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700"
+        className="w-full font-bold text-xl bg-blue-600 text-white p-2 rounded hover:bg-blue-700"
       >
         Se connecter
       </button>

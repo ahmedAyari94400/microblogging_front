@@ -13,6 +13,7 @@
   --color-background: var(--background-blanc);
   --color-foreground: var(--foreground-noir);
   --vert: var(--vert);
+  --bleugris: var(--bleugris);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }

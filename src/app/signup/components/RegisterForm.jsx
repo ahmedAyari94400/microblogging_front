@@ -154,7 +154,7 @@ export default function RegisterForm() {
 
       <button
         type="submit"
-        className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700"
+        className="w-full text-xl font-bold bg-blue-600 text-white p-4 rounded hover:bg-blue-700"
       >
         S'inscrire
       </button>
