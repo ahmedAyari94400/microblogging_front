@@ -25,7 +25,7 @@ export default function RegisterForm() {
     e.preventDefault();
 
     try {
-      const res = await fetch("/api/users/register", {
+      const res = await fetch("http://localhost:3000/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -42,7 +42,9 @@ export default function RegisterForm() {
           user_biography: "",
         });
       } else {
-        setMessage(data.message || "Erreur lors de la création du compte");
+        setMessage(
+          data.error || data.message || "Erreur lors de la création du compte"
+        );
       }
     } catch (error) {
       setMessage("Erreur réseau ou serveur");
@@ -56,60 +58,105 @@ export default function RegisterForm() {
     >
       <h2 className="text-xl font-bold">Créer un compte</h2>
 
-      <input
-        type="text"
-        name="firstname"
-        value={formData.firstname}
-        onChange={handleChange}
-        placeholder="Prénom"
-        required
-        className="w-full border p-2 rounded"
-      />
+      <div>
+        <label
+          htmlFor="firstname"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
+          Prénom
+        </label>
+        <input
+          type="text"
+          id="firstname"
+          name="firstname"
+          value={formData.firstname}
+          onChange={handleChange}
+          placeholder="Prénom"
+          required
+          className="w-full border p-2 rounded"
+        />
+      </div>
 
-      <input
-        type="text"
-        name="lastname"
-        value={formData.lastname}
-        onChange={handleChange}
-        placeholder="Nom"
-        required
-        className="w-full border p-2 rounded"
-      />
+      <div>
+        <label
+          htmlFor="lastname"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
+          Nom
+        </label>
+        <input
+          type="text"
+          id="lastname"
+          name="lastname"
+          value={formData.lastname}
+          onChange={handleChange}
+          placeholder="Nom"
+          required
+          className="w-full border p-2 rounded"
+        />
+      </div>
 
-      <input
-        type="email"
-        name="email"
-        value={formData.email}
-        onChange={handleChange}
-        placeholder="Email"
-        required
-        className="w-full border p-2 rounded"
-      />
+      <div>
+        <label
+          htmlFor="email"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
+          Email
+        </label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          placeholder="Email"
+          required
+          className="w-full border p-2 rounded"
+        />
+      </div>
 
-      <input
-        type="password"
-        name="password"
-        value={formData.password}
-        onChange={handleChange}
-        placeholder="Mot de passe"
-        required
-        className="w-full border p-2 rounded"
-      />
+      <div>
+        <label
+          htmlFor="password"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
+          Mot de passe
+        </label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          value={formData.password}
+          onChange={handleChange}
+          placeholder="Mot de passe"
+          required
+          className="w-full border p-2 rounded"
+        />
+      </div>
 
-      <textarea
-        name="user_biography"
-        value={formData.user_biography}
-        onChange={handleChange}
-        placeholder="Quelques mots sur moi"
-        rows="4"
-        className="w-full border p-2 rounded"
-      ></textarea>
+      <div>
+        <label
+          htmlFor="user_biography"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
+          Bio
+        </label>
+        <textarea
+          id="user_biography"
+          name="user_biography"
+          value={formData.user_biography}
+          onChange={handleChange}
+          placeholder="Quelques mots sur moi"
+          rows="4"
+          className="w-full border p-2 rounded"
+        ></textarea>
+      </div>
 
       <button
         type="submit"
         className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700"
       >
-        S’inscrire
+        S'inscrire
       </button>
 
       {message && <p className="text-center mt-2">{message}</p>}
