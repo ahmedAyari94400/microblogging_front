@@ -1,4 +1,5 @@
 import LoginForm from "./components/LoginForm";
+import Link from "next/link";
 
 export default function LoginPage() {
   return (
@@ -15,16 +16,15 @@ export default function LoginPage() {
           Pas encore de compte ?<br></br>
           Créez votre compte en quelques clics !
         </p>
-      </div>
-
-      {/* Bouton */}
-      <div className="hidden md:flex">
-        <Link
-          href="/signup"
-          className="bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-xl shadow-sm transition"
-        >
-          Créer un compte
-        </Link>
+        {/* Bouton */}
+        <div className="hidden md:flex center">
+          <Link
+            href="/signup"
+            className="bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-xl shadow-sm transition"
+          >
+            Créer un compte
+          </Link>
+        </div>
       </div>
     </>
   );
