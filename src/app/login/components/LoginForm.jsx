@@ -1,80 +1,74 @@
-"use client";
+import React, { useState } from "react";
+import { signIn, getSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
-import { useState } from "react";
-
-export default function LoginForm() {
+const LoginForm = () => {
   const [formData, setFormData] = useState({
-    firstname: "",
+    firstName: "",
     password: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const [message, setMessage] = useState(null);
+  const router = useRouter();
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+    setError("");
 
     try {
-      const res = await fetch("", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+      const result = await signIn("credentials", {
+        firstName: formData.firstName,
+        password: formData.password,
+        redirect: false, // On gère la redirection manuellement
       });
 
-      const data = await res.json();
-      if (res.ok) {
-        setMessage("Vous êtes connecté");
-        setFormData({
-          firstname: "",
-          password: "",
-        });
+      if (result?.error) {
+        setError("Identifiants invalides");
       } else {
-        setMessage(data.error || data.message || "Erreur lors de la connexion");
+        // Connexion réussie
+        const session = await getSession();
+        console.log("Session créée:", session);
+
+        // Redirection vers la page souhaitée
+        router.push("/dashboard"); // ou la page de votre choix
       }
     } catch (error) {
-      setMessage("Erreur réseau ou serveur");
+      console.error("Erreur lors de la connexion:", error);
+      setError("Une erreur est survenue lors de la connexion");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="w-full max-w-2xl mx-auto space-y-6 p-8 shadow-lg rounded-xl"
-      style={{ backgroundColor: "var(--bleugris)" }}
-    >
-      <h2 className="text-2xl font-bold text-center">Se connecter</h2>
-
+    <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label
-          htmlFor="firstname"
-          className="block text-md font-medium text-gray-700 mb-1"
-        >
+        <label htmlFor="firstName" className="block text-sm font-medium">
           Prénom
         </label>
         <input
           type="text"
-          id="firstname"
-          name="firstname"
-          value={formData.firstname}
+          id="firstName"
+          name="firstName"
+          value={formData.firstName}
           onChange={handleChange}
-          placeholder="Prénom"
           required
-          className="w-full border p-2 rounded"
+          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
+          disabled={isLoading}
         />
       </div>
 
       <div>
-        <label
-          htmlFor="password"
-          className="block text-md text-gray-700 font-medium mb-1"
-        >
+        <label htmlFor="password" className="block text-sm font-medium">
           Mot de passe
         </label>
         <input
@@ -83,20 +77,126 @@ export default function LoginForm() {
           name="password"
           value={formData.password}
           onChange={handleChange}
-          placeholder="Mot de passe"
           required
-          className="w-full border p-2 rounded"
+          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
+          disabled={isLoading}
         />
       </div>
 
+      {error && <div className="text-red-600 text-sm">{error}</div>}
+
       <button
         type="submit"
-        className="w-full font-bold text-xl bg-blue-600 text-white p-2 rounded hover:bg-blue-700"
+        disabled={isLoading}
+        className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 disabled:opacity-50"
       >
-        Se connecter
+        {isLoading ? "Connexion..." : "Se connecter"}
       </button>
-
-      {message && <p className="text-center mt-2">{message}</p>}
     </form>
   );
-}
+};
+
+export default LoginForm;
+
+// "use client";
+
+// import { useState } from "react";
+
+// export default function LoginForm() {
+//   const [formData, setFormData] = useState({
+//     firstname: "",
+//     password: "",
+//   });
+
+//   const [message, setMessage] = useState(null);
+
+//   const handleChange = (e) => {
+//     const { name, value } = e.target;
+//     setFormData((prev) => ({
+//       ...prev,
+//       [name]: value,
+//     }));
+//   };
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+
+//     try {
+//       const res = await fetch("", {
+//         method: "POST",
+//         headers: { "Content-Type": "application/json" },
+//         body: JSON.stringify(formData),
+//       });
+
+//       const data = await res.json();
+//       if (res.ok) {
+//         setMessage("Vous êtes connecté");
+//         setFormData({
+//           firstname: "",
+//           password: "",
+//         });
+//       } else {
+//         setMessage(data.error || data.message || "Erreur lors de la connexion");
+//       }
+//     } catch (error) {
+//       setMessage("Erreur réseau ou serveur");
+//     }
+//   };
+
+//   return (
+//     <form
+//       onSubmit={handleSubmit}
+//       className="w-full max-w-2xl mx-auto space-y-6 p-8 shadow-lg rounded-xl"
+//       style={{ backgroundColor: "var(--bleugris)" }}
+//     >
+//       <h2 className="text-2xl font-bold text-center">Se connecter</h2>
+
+//       <div>
+//         <label
+//           htmlFor="firstname"
+//           className="block text-md font-medium text-gray-700 mb-1"
+//         >
+//           Prénom
+//         </label>
+//         <input
+//           type="text"
+//           id="firstname"
+//           name="firstname"
+//           value={formData.firstname}
+//           onChange={handleChange}
+//           placeholder="Prénom"
+//           required
+//           className="w-full border p-2 rounded"
+//         />
+//       </div>
+
+//       <div>
+//         <label
+//           htmlFor="password"
+//           className="block text-md text-gray-700 font-medium mb-1"
+//         >
+//           Mot de passe
+//         </label>
+//         <input
+//           type="password"
+//           id="password"
+//           name="password"
+//           value={formData.password}
+//           onChange={handleChange}
+//           placeholder="Mot de passe"
+//           required
+//           className="w-full border p-2 rounded"
+//         />
+//       </div>
+
+//       <button
+//         type="submit"
+//         className="w-full font-bold text-xl bg-blue-600 text-white p-2 rounded hover:bg-blue-700"
+//       >
+//         Se connecter
+//       </button>
+
+//       {message && <p className="text-center mt-2">{message}</p>}
+//     </form>
+//   );
+// }
