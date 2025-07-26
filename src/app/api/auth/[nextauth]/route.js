@@ -2,7 +2,6 @@
 
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import bcrypt from "bcrypt";
 
 const handler = NextAuth({
   providers: [
@@ -69,7 +68,7 @@ const handler = NextAuth({
     },
   },
   pages: {
-    signIn: "/login", // Votre page de login personnalisée
+    signIn: "/login", // page de login
   },
   session: {
     strategy: "jwt",
