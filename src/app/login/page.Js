@@ -6,12 +6,12 @@ export default function LoginPage() {
   return (
     <>
       <div>
-        <h1 className="text-xl font-bold text-center mt-15 mb-20">
+        <h1 className="text-2xl font-bold text-center mt-20 mb-6">
           Je me connecte
         </h1>
       </div>
 
-      <div className="min-h-screen">
+      <div className="min-h-screen flex flex-col items-center justify-center p-2">
         <LoginForm />
         <p className="text-4xl text-center mt-15 p-6">
           Pas encore de compte ?<br></br>

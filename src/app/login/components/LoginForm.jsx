@@ -2,10 +2,11 @@
 import React, { useState } from "react";
 import { signIn, getSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import ButtonSubmit from "../../components/ButtonSubmit";
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({
-    firstName: "",
+    firstname: "",
     password: "",
   });
   const [isLoading, setIsLoading] = useState(false);
@@ -27,7 +28,7 @@ const LoginForm = () => {
 
     try {
       const result = await signIn("credentials", {
-        firstName: formData.firstName,
+        firstname: formData.firstname,
         password: formData.password,
         redirect: false, // On gère la redirection manuellement
       });
@@ -51,15 +52,15 @@ const LoginForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-6">
       <div>
-        <label htmlFor="firstName" className="block text-sm font-medium">
+        <label htmlFor="firstname" className="block text-sm font-medium">
           Prénom
         </label>
         <input
           type="text"
-          id="firstName"
-          name="firstName"
+          id="firstname"
+          name="firstname"
           value={formData.firstName}
           onChange={handleChange}
           required
@@ -86,13 +87,15 @@ const LoginForm = () => {
 
       {error && <div className="text-red-600 text-sm">{error}</div>}
 
-      <button
+      {/* <button
         type="submit"
         disabled={isLoading}
-        className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 disabled:opacity-50"
+        className="w-auto mx-auto block bg-blue-600 text-xl text-white font-bold py-6 px-8 rounded-md hover:bg-blue-700 disabled:opacity-50"
       >
         {isLoading ? "Connexion..." : "Se connecter"}
-      </button>
+      </button> */}
+
+      <ButtonSubmit>Se connecter</ButtonSubmit>
     </form>
   );
 };

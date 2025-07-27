@@ -7,13 +7,13 @@ const handler = NextAuth({
     CredentialsProvider({
       name: "credentials",
       credentials: {
-        firstName: { label: "Prénom", type: "text" },
+        firstname: { label: "Prénom", type: "text" },
         password: { label: "Mot de passe", type: "password" },
       },
       async authorize(credentials) {
         console.log(
           "🔍 NextAuth v4 - Authorize appelé avec:",
-          credentials?.firstName
+          credentials?.firstname
         );
         try {
           // Appel au back API Express pour vérifier les credentials
@@ -25,7 +25,7 @@ const handler = NextAuth({
                 "Content-Type": "application/json",
               },
               body: JSON.stringify({
-                firstName: credentials.firstName,
+                firstname: credentials.firstname,
                 password: credentials.password,
               }),
             }
@@ -38,8 +38,8 @@ const handler = NextAuth({
             // Retourne l'objet user qui sera stocké dans le token et visible dans la page dashboard
             return {
               id: data.user.id,
-              firstName: data.user.firstName,
-              lastName: data.user.lastName,
+              firstname: data.user.firstname,
+              lastname: data.user.lastname,
               email: data.user.email,
               // ajouter d'autres champs (photo)
             };
@@ -60,7 +60,7 @@ const handler = NextAuth({
       console.log("🔍 JWT callback - user:", user, "token:", token);
       if (user) {
         token.id = user.id;
-        token.firstName = user.firstName;
+        token.firstname = user.firstname;
         token.email = user.email;
       }
       return token;
@@ -68,7 +68,7 @@ const handler = NextAuth({
     async session({ session, token }) {
       // Envoie les propriétés vers le client
       session.user.id = token.id;
-      session.user.firstName = token.firstName;
+      session.user.firstname = token.firstname;
       session.user.email = token.email;
       return session;
     },
