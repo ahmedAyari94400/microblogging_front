@@ -1,78 +1,96 @@
 'use client';
 
-import { useEffect, useState } from "react";
+import { useState, useEffect } from 'react';
 
-export default function LikeButton({ postId }) {
-  const MOCK_USER_ID = 1;
-
+export default function LikeButton({ postId, userId }) {
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
+  const [likeId, setLikeId] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // Charger likeCount et vérifier si l'utilisateur a liké ce post
   useEffect(() => {
-    async function fetchData() {
+    async function fetchLikes() {
+      setLoading(true);
       try {
-        // Fetch le nombre de likes
-        const resCount = await fetch(`http://localhost:3001/likes/count/${postId}`);
-        if (!resCount.ok) throw new Error(`Erreur HTTP: ${resCount.status}`);
-        const dataCount = await resCount.json();
-        setLikeCount(dataCount.count || 0);
+        // Récupère le nombre total de likes pour le post
+        const countRes = await fetch(`http://localhost:3001/likes/count/${postId}`);
+        const countData = await countRes.json();
+        setLikeCount(countData.count || 0);
 
-        // Vérifier si l'utilisateur a déjà liké
-        const resCheck = await fetch(`http://localhost:3001/likes/check?userId=${MOCK_USER_ID}&postId=${postId}`);
-        if (!resCheck.ok) throw new Error(`Erreur HTTP: ${resCheck.status}`);
-        const dataCheck = await resCheck.json();
-        setLiked(dataCheck.liked);
+        // Récupère les likes du user sur ce post (0 ou 1 like)
+        const userLikesRes = await fetch(
+          `http://localhost:3001/likes?post_id=${postId}&user_id=${userId}`
+        );
+        const userLikes = await userLikesRes.json();
 
+        if (userLikes.length > 0) {
+          setLiked(true);
+          setLikeId(userLikes[0].id);
+        } else {
+          setLiked(false);
+          setLikeId(null);
+        }
       } catch (error) {
-        console.error("Erreur lors du fetch des likes :", error);
+        console.error("Erreur fetch likes :", error);
       } finally {
         setLoading(false);
       }
     }
 
-    fetchData();
-  }, [postId]);
+    fetchLikes();
+  }, [postId, userId]);
 
   const handleLike = async () => {
     try {
-      if (liked) {
-        // Supprimer le like
-        const res = await fetch(`http://localhost:3001/likes?userId=${MOCK_USER_ID}&postId=${postId}`, {
-          method: "DELETE",
+      if (!liked) {
+        // Créer le like (POST)
+        const response = await fetch('http://localhost:3001/likes', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ user_id: userId, post_id: postId }),
         });
-        if (!res.ok) throw new Error(`Erreur HTTP: ${res.status}`);
-        setLikeCount((prev) => prev - 1);
+
+        if (response.ok) {
+          const newLike = await response.json();
+          setLikeCount((count) => count + 1);
+          setLiked(true);
+          setLikeId(newLike.id);
+        } else {
+          const errorData = await response.json();
+          console.error('Erreur lors de la création du like:', errorData);
+        }
       } else {
-        // Ajouter un like
-        const res = await fetch("http://localhost:3001/likes", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ user_id: MOCK_USER_ID, post_id: postId }),
+        // Supprimer le like (DELETE)
+        const response = await fetch(`http://localhost:3001/likes/${likeId}`, {
+          method: 'DELETE',
         });
-        if (!res.ok) throw new Error(`Erreur HTTP: ${res.status}`);
-        setLikeCount((prev) => prev + 1);
+
+        if (response.ok) {
+          setLikeCount((count) => count - 1);
+          setLiked(false);
+          setLikeId(null);
+        } else {
+          console.error('Erreur lors de la suppression du like');
+        }
       }
-      setLiked(!liked);
     } catch (error) {
-      console.error("Erreur lors du like/unlike :", error);
+      console.error('Erreur réseau ou autre:', error);
     }
   };
 
-  if (loading) return <div>Chargement...</div>;
+  if (loading) return <p>Chargement...</p>;
 
   return (
     <button
       onClick={handleLike}
-      style={{ border: "none", background: "none", cursor: "pointer" }}
-      aria-label={liked ? "Unlike" : "Like"}
+      style={{ border: 'none', background: 'none', cursor: 'pointer' }}
+      aria-label={liked ? 'Retirer le like' : 'Liker'}
     >
-      <span style={{ fontSize: "24px", color: liked ? "red" : "gray" }}>
-        {liked ? "❤️" : "🤍"}
+      <span style={{ fontSize: '24px', color: liked ? 'red' : 'gray' }}>
+        {liked ? '❤️' : '🤍'}
       </span>
-      <span style={{ marginLeft: "8px", fontSize: "16px" }}>{likeCount}</span>
+      <span style={{ marginLeft: '8px', fontSize: '16px' }}>{likeCount}</span>
     </button>
   );
 }
