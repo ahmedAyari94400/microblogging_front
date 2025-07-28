@@ -61,7 +61,7 @@ const LoginForm = () => {
           type="text"
           id="firstname"
           name="firstname"
-          value={formData.firstName}
+          value={formData.firstname}
           onChange={handleChange}
           required
           className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"

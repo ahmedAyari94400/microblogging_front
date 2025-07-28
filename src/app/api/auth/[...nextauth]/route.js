@@ -10,48 +10,183 @@ const handler = NextAuth({
         firstname: { label: "Prénom", type: "text" },
         password: { label: "Mot de passe", type: "password" },
       },
+
       async authorize(credentials) {
-        console.log(
-          "🔍 NextAuth v4 - Authorize appelé avec:",
-          credentials?.firstname
-        );
+        console.log("🔍 NextAuth - Credentials reçues:", credentials);
+        console.log("🔍 Backend URL:", process.env.BACKEND_URL);
+
         try {
-          // Appel au back API Express pour vérifier les credentials
-          const response = await fetch(
-            `${process.env.BACKEND_URL}/api/auth/login`,
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                firstname: credentials.firstname,
-                password: credentials.password,
-              }),
-            }
+          const url = `${process.env.BACKEND_URL}/api/auth/login`;
+          console.log("🔍 URL complète:", url);
+
+          const payload = {
+            firstname: credentials.firstname,
+            password: credentials.password,
+          };
+          console.log("🔍 Payload envoyé:", payload);
+
+          const response = await fetch(url, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+          });
+
+          console.log("🔍 Status response:", response.status);
+          console.log(
+            "🔍 Response headers:",
+            Object.fromEntries(response.headers)
           );
 
-          const data = await response.json();
-          console.log("🔍 Réponse du backend:", response.status, data);
+          // Récupérer le texte brut d'abord
+          const responseText = await response.text();
+          console.log(
+            "🔍 Response brute (100 premiers chars):",
+            responseText.substring(0, 100)
+          );
+
+          // Essayer de parser en JSON
+          let data;
+          try {
+            data = JSON.parse(responseText);
+            console.log("🔍 Data parsée:", data);
+          } catch (parseError) {
+            console.error("🔍 Erreur parsing JSON:", parseError);
+            console.log("🔍 Contenu complet:", responseText);
+            return null;
+          }
 
           if (response.ok && data.user) {
-            // Retourne l'objet user qui sera stocké dans le token et visible dans la page dashboard
             return {
               id: data.user.id,
               firstname: data.user.firstname,
               lastname: data.user.lastname,
               email: data.user.email,
-              // ajouter d'autres champs (photo)
             };
           } else {
-            // Credentials invalides
+            console.log(
+              "🔍 Échec authentification - response.ok:",
+              response.ok,
+              "data.user:",
+              data.user
+            );
             return null;
           }
         } catch (error) {
-          console.error("Erreur lors de l'authentification:", error);
+          console.error("🔍 Erreur complète:", error);
           return null;
         }
       },
+      async authorize(credentials) {
+        console.log("🔍 NextAuth - Credentials reçues:", credentials);
+        console.log("🔍 Backend URL:", process.env.BACKEND_URL);
+
+        try {
+          const url = `${process.env.BACKEND_URL}/auth/login`;
+          console.log("🔍 URL complète:", url);
+
+          const payload = {
+            firstname: credentials.firstname,
+            password: credentials.password,
+          };
+          console.log("🔍 Payload envoyé:", payload);
+
+          const response = await fetch(url, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+          });
+
+          console.log("🔍 Status response:", response.status);
+          console.log(
+            "🔍 Response headers:",
+            Object.fromEntries(response.headers)
+          );
+
+          // Récupérer le texte brut d'abord
+          const responseText = await response.text();
+          console.log(
+            "🔍 Response brute (100 premiers chars):",
+            responseText.substring(0, 100)
+          );
+
+          // Essayer de parser en JSON
+          let data;
+          try {
+            data = JSON.parse(responseText);
+            console.log("🔍 Data parsée:", data);
+          } catch (parseError) {
+            console.error("🔍 Erreur parsing JSON:", parseError);
+            console.log("🔍 Contenu complet:", responseText);
+            return null;
+          }
+
+          if (response.ok && data.user) {
+            return {
+              id: data.user.id,
+              firstname: data.user.firstname,
+              lastname: data.user.lastname,
+              email: data.user.email,
+            };
+          } else {
+            console.log(
+              "🔍 Échec authentification - response.ok:",
+              response.ok,
+              "data.user:",
+              data.user
+            );
+            return null;
+          }
+        } catch (error) {
+          console.error("🔍 Erreur complète:", error);
+          return null;
+        }
+      },
+      // async authorize(credentials) {
+      //   console.log(
+      //     "🔍 NextAuth v4 - Authorize appelé avec:",
+      //     credentials?.firstname
+      //   );
+      //   try {
+      //     // Appel au back API Express pour vérifier les credentials
+      //     const response = await fetch(
+      //       `${process.env.BACKEND_URL}/api/auth/login`,
+      //       {
+      //         method: "POST",
+      //         headers: {
+      //           "Content-Type": "application/json",
+      //         },
+      //         body: JSON.stringify({
+      //           firstname: credentials.firstname,
+      //           password: credentials.password,
+      //         }),
+      //       }
+      //     );
+
+      //     const data = await response.json();
+      //     console.log("🔍 Réponse du backend:", response.status, data);
+
+      //     if (response.ok && data.user) {
+      //       // Retourne l'objet user qui sera stocké dans le token et visible dans la page dashboard
+      //       return {
+      //         id: data.user.id,
+      //         firstname: data.user.firstname,
+      //         lastname: data.user.lastname,
+      //         email: data.user.email,
+      //         // ajouter d'autres champs (photo)
+      //       };
+      //     } else {
+      //       // Credentials invalides
+      //       return null;
+      //     }
+      //   } catch (error) {
+      //     console.error("Erreur lors de l'authentification:", error);
+      //     return null;
+      //   }
+      // },
     }),
   ],
   callbacks: {
