@@ -27,7 +27,7 @@ const Page = () => {
 
   return (
     <div>
-      <h1>Articles de voyage</h1>
+      
       {posts.length === 0 ? (
         <p>Aucun post pour le moment.</p>
       ) : (

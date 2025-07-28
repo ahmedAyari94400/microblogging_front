@@ -12,6 +12,8 @@ const Post = ({
   
 
   return (
+    <div style={styles.container}>
+
     <article className="post-card" style={styles.card}>
       {url_pictures && (
         <img src={url_pictures} alt="Photo de voyage" style={styles.image} />
@@ -32,11 +34,22 @@ const Post = ({
         </div>
       </div>
     </article>
+    </div>
   );
 };
 
 const styles = {
+
+  container: {
+    display: 'flex',
+    flexDirection: 'row',      
+    flexWrap: 'wrap',          
+    gap: '1rem',               
+    justifyContent: 'center',  
+    padding: '1rem',
+  },
   card: {
+    
     border: '1px solid #ddd',
     borderRadius: '10px',
     padding: '1rem',
