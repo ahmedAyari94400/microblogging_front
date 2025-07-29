@@ -63,6 +63,7 @@ const handler = NextAuth({
               firstname: data.user.firstname,
               lastname: data.user.lastname,
               email: data.user.email,
+              url_userpicture: data.user.url_userpicture,
             };
           } else {
             console.log(
@@ -196,7 +197,9 @@ const handler = NextAuth({
       if (user) {
         token.id = user.id;
         token.firstname = user.firstname;
+        token.lastname = user.lastname;
         token.email = user.email;
+        token.url_userpicture = user.url_userpicture;
       }
       return token;
     },
@@ -205,6 +208,8 @@ const handler = NextAuth({
       session.user.id = token.id;
       session.user.firstname = token.firstname;
       session.user.email = token.email;
+      session.user.lastname = token.lastname;
+      session.user.url_userpicture = token.url_userpicture;
       return session;
     },
   },
