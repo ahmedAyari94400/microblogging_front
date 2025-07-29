@@ -1,4 +1,3 @@
-// src/components/Post.jsx
 import React from 'react';
 
 const Post = ({
@@ -9,85 +8,36 @@ const Post = ({
   likes = [],
   comments = []
 }) => {
-  
-
   return (
-    <div style={styles.container}>
-
-    <article className="post-card" style={styles.card}>
+    <article className="bg-white shadow-md rounded-lg p-4 max-w-xl w-full mx-auto mb-6 border border-gray-200">
       {url_pictures && (
-        <img src={url_pictures} alt="Photo de voyage" style={styles.image} />
+        <img
+          src={url_pictures}
+          alt="Photo de voyage"
+          className="w-full h-auto rounded-md mb-4 object-cover"
+        />
       )}
 
-      <div style={styles.content}>
-        <p style={styles.description}>{description || 'Pas de description.'}</p>
-
-        {hashtag && <p style={styles.hashtag}>#{hashtag}</p>}
-
-        <p style={styles.meta}>
-          <strong>Créé le :</strong> 
+      <div>
+        <p className="text-gray-800 text-base mb-2">
+          {description || 'Pas de description.'}
         </p>
 
-        <div style={styles.stats}>
+        {hashtag && (
+          <p className="text-blue-500 font-semibold mb-2">#{hashtag}</p>
+        )}
+
+        <p className="text-sm text-gray-500 mb-2">
+          <strong>Créé le :</strong> {new Date(created_at).toLocaleDateString()}
+        </p>
+
+        <div className="flex justify-between text-sm text-gray-700 mt-4">
           <span>💬 {comments.length} commentaire(s)</span>
           <span>❤️ {likes.length} like(s)</span>
         </div>
       </div>
     </article>
-    </div>
   );
-};
-
-const styles = {
-
-  container: {
-    display: 'flex',
-    flexDirection: 'row',      
-    flexWrap: 'wrap',          
-    gap: '1rem',               
-    justifyContent: 'center',  
-    padding: '1rem',
-  },
-  card: {
-    
-    border: '1px solid #ddd',
-    borderRadius: '10px',
-    padding: '1rem',
-    marginBottom: '1.5rem',
-    backgroundColor: '#fff',
-    boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
-    maxWidth: '600px',
-    margin: '0 auto',
-  },
-  image: {
-    width: '100%',
-    borderRadius: '8px',
-    marginBottom: '1rem',
-  },
-  content: {
-    padding: '0 0.5rem',
-  },
-  description: {
-    fontSize: '1rem',
-    marginBottom: '0.5rem',
-  },
-  hashtag: {
-    color: '#3498db',
-    fontWeight: 'bold',
-    marginBottom: '0.5rem',
-  },
-  meta: {
-    fontSize: '0.9rem',
-    color: '#777',
-    marginBottom: '0.5rem',
-  },
-  stats: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    fontSize: '0.9rem',
-    color: '#444',
-    marginTop: '1rem',
-  },
 };
 
 export default Post;
