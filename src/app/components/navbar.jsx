@@ -15,7 +15,7 @@ export default function Navbar() {
 
           {/* Liens */}
           <div className="space-x-6 text-gray-700 font-medium hidden md:flex">
-            <Link href="/">Accueil</Link>
+            <Link href="/home">Accueil</Link>
           </div>
 
           {/* Bouton */}
