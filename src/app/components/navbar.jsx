@@ -10,12 +10,12 @@ export default function Navbar() {
           
           {/* Logo */}
           <div className="text-2xl font-extrabold text-emerald-600 tracking-tight">
-            🌍 Travelers
+            <Link href="/">🌍 Travelers</Link>
           </div>
 
           {/* Liens */}
           <div className="space-x-6 text-gray-700 font-medium hidden md:flex">
-            <Link href="/home">Accueil</Link>
+            <Link href="/">Accueil</Link>
           </div>
 
           {/* Bouton */}

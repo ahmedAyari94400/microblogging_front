@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Footer() {
   return (
     <footer
@@ -27,10 +29,10 @@ export default function Footer() {
             fontWeight: "600",
           }}
         >
-          <span>À propos</span>
-          <span>Contact</span>
-          <span>Conditions</span>
-          <span>Confidentialité</span>
+          <Link href="#">À propos</Link>
+          <Link href="#">Contact</Link>
+          <Link href="#">Conditions</Link>
+           <Link href="#">Confidentialité</Link>
         </div>
         <p style={{ color: "#C2DFED", fontSize: "0.75rem" }}>
           © {new Date().getFullYear()} Travelers — Partagez vos aventures ✈️

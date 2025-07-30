@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import Post from '../components/posts.jsx'; 
-import { fetchPosts } from '../lib/fetchPosts';
+import Post from './components/posts.jsx'; 
+import { fetchPosts } from './lib/fetchPosts.js';
 
 const Page = () => {
   const [posts, setPosts] = useState([]);
