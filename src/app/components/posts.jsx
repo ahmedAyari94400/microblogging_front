@@ -9,10 +9,24 @@ const Post = ({
   hashtag,
   created_at,
   likes = [],
-  comments = []
+  comments = [],
+  users,
 }) => {
   return (
     <article className="bg-white shadow-md rounded-lg p-4 max-w-xl w-full mx-auto mb-6 border border-gray-200">
+      {/* ✅ Affichage prénom + photo de profil */}
+      {users && (
+        <div className="flex items-center mb-4">
+          <img
+            src={users.url_userpicture}
+            alt={`Photo de ${users.firstname}`}
+            className="w-10 h-10 rounded-full mr-3 object-cover"
+          />
+          <span className="font-semibold text-gray-800">{users.firstname}</span>
+        </div>
+      )}
+
+
       {url_pictures && (
         <img
           src={url_pictures}
