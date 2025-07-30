@@ -1,6 +1,9 @@
-import React from 'react';
+"use client";
+import React from "react";
+import Comments from "./comments.jsx"; // Assure-toi que le chemin est bon
 
 const Post = ({
+  id,
   description,
   url_pictures,
   hashtag,
@@ -20,7 +23,7 @@ const Post = ({
 
       <div>
         <p className="text-gray-800 text-base mb-2">
-          {description || 'Pas de description.'}
+          {description || "Pas de description."}
         </p>
 
         {hashtag && (
@@ -28,13 +31,17 @@ const Post = ({
         )}
 
         <p className="text-sm text-gray-500 mb-2">
-          <strong>Créé le :</strong> {new Date(created_at).toLocaleDateString()}
+          <strong>Créé le :</strong>{" "}
+          {new Date(created_at).toLocaleDateString()}
         </p>
 
-        <div className="flex justify-between text-sm text-gray-700 mt-4">
+        <div className="flex justify-between text-sm text-gray-700 mt-4 mb-4">
           <span>💬 {comments.length} commentaire(s)</span>
           <span>❤️ {likes.length} like(s)</span>
         </div>
+
+        {/* ✅ Intégration des commentaires ici */}
+        <Comments postId={id} initialComments={comments} />
       </div>
     </article>
   );
