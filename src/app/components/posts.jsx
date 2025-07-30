@@ -20,12 +20,13 @@ const Post = ({
           <img
             src={users.url_userpicture}
             alt={`Photo de ${users.firstname}`}
-            className="w-10 h-10 rounded-full mr-3 object-cover"
+            className="w-8 h-8 rounded-full mr-4 object-cover"
           />
-          <span className="font-semibold text-gray-800">{users.firstname}</span>
+          <span className="text-lg font-semibold text-gray-800">
+            {users.firstname}
+          </span>
         </div>
       )}
-
 
       {url_pictures && (
         <img
@@ -45,8 +46,7 @@ const Post = ({
         )}
 
         <p className="text-sm text-gray-500 mb-2">
-          <strong>Créé le :</strong>{" "}
-          {new Date(created_at).toLocaleDateString()}
+          <strong>Créé le :</strong> {new Date(created_at).toLocaleDateString()}
         </p>
 
         <div className="flex justify-between text-sm text-gray-700 mt-4 mb-4">
