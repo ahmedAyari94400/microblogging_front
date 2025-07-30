@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+const userAvatar = "/user_avatar.png";
 
 export default function RegisterForm() {
   const [formData, setFormData] = useState({
@@ -9,6 +10,7 @@ export default function RegisterForm() {
     email: "",
     password: "",
     user_biography: "",
+    url_userpicture: userAvatar,
   });
 
   const [message, setMessage] = useState(null);
@@ -40,6 +42,7 @@ export default function RegisterForm() {
           email: "",
           password: "",
           user_biography: "",
+          url_userpicture: "",
         });
       } else {
         setMessage(
@@ -130,6 +133,24 @@ export default function RegisterForm() {
           onChange={handleChange}
           placeholder="Mot de passe"
           required
+          className="w-full border p-2 rounded"
+        />
+      </div>
+
+      <div>
+        <label
+          htmlFor="url_userpicture"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
+          URL de la photo
+        </label>
+        <input
+          type="url"
+          id="url_userpicture"
+          name="url_userpicture"
+          value={formData.url_userpicture}
+          onChange={handleChange}
+          placeholder="https://exemple.com/photo.jpg"
           className="w-full border p-2 rounded"
         />
       </div>
